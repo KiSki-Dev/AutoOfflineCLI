@@ -17,7 +17,7 @@ def mainMenu():
         if opt == 1:
             start()
         elif opt == 2:
-            print("2")
+            stopShutdown()
         elif opt == 3:
             print("3")
         elif opt == 4:
@@ -47,28 +47,28 @@ def start():
             opt = opt[:-1]
 
             if opt.isdigit():
-                time = int(opt)
+                amount = int(opt)
             else:
                 print("Invalid option. Please try again.")
                 time.sleep(0.3)
                 start()
 
             if format == "m":
-                time = time * 60
+                amount = amount * 60
             elif format == "h":
-                time = time * 3600
+                amount = amount * 3600
             elif format == "d":
-                time = time * 86400
+                amount = amount * 86400
 
-            if time > 312206400: # 9,9 Years
+            if amount > 312206400: # 9,9 Years
                 print("You exceeded the maximum time limit of 10 Years. Please try again.")
                 time.sleep(1)
                 start()
             else: 
-                shutdown(time)
+                shutdown(amount)
         else:
             print("Invalid input. Please try again.")
-            time.sleep(0.3)
+            time.sleep(0.8)
             start()
     
     else:
@@ -81,76 +81,99 @@ def start():
             opt = opt[:-1]
 
             if opt.isdigit():
-                time = int(opt)
+                amount = int(opt)
             else:
                 print("Invalid option. Please try again.")
                 time.sleep(0.3)
                 start()
 
             if format == "h":
-                time = time * 60
+                amount = amount * 60
             elif format == "d":
-                time = time * 1440
+                amount = amount * 1440
 
-            shutdown(time)
+            shutdown(amount)
         else:
             print("Invalid input. Please try again.")
-            time.sleep(0.3)
+            time.sleep(0.8)
             start()
 
 
-
-    # if opt.isdigit():
-    #     opt = int(opt)
-    #     print(opt)
-    #     shutdown(opt)
-    # else:
-    #     print("Invalid option. Please try again.")
-    #     time.sleep(0.3)
-    #     mainMenu()
-
 def stopShutdown():
-    print("stopShutdown")
+    if os.name == 'nt':
+        try:
+            os.system("shutdown -a")
+        except:
+            print("Error occurred. Please try again.")
+        time.sleep(1)
+
+    elif os.name == 'posix':
+        try:
+            os.system("shutdown -c")
+        except:
+            print("Error occurred. Please try again.")
+        time.sleep(1)
+
+    else:
+        print("Unkown Operating System.\nTry Unix Stop Shutdown?")
+        cont = input("(y/n): ")
+        if cont.lower() == "y":
+            try:
+                os.system("shutdown -c")
+            except:
+                print("Error occurred. Please try again.")
+            time.sleep(1)
+        else:
+            print("Returning to main menu...")
+            time.sleep(0.3)
+
+    mainMenu()
 
 def settingsHelp():
     print("settingsHelp")
 
 
-def shutdown(time):
+def shutdown(amount):
     if os.name == 'nt':
         try:
-            resp = os.system("shutdown -s -t " + str(time))
+            resp = os.system("shutdown -s -t " + str(amount))
         except:
             print("Error occurred. Trying again...")
-            os.system("shutdown /a")
-            shutdown(time)
+            os.system("shutdown -a")
+            shutdown(amount)
 
         if resp == 1190:
             print("Shutdown already in progress. Cancelling...")
-            os.system("shutdown /a")
-            shutdown(time)
+            os.system("shutdown -a")
+            shutdown(amount)
+
+        time.sleep(1)
 
     elif os.name == 'posix':
         try:
-            os.system("sudo shutdown -h +" + str(time))
+            os.system("sudo shutdown -h +" + str(amount))
         except:
             print("Error occurred. Trying again...")
             os.system("shutdown -c")
-            shutdown(time)
+            shutdown(amount)
+        time.sleep(1)
+
     else:
         print("Unkown Operating System.\nTry Unix Shutdown?")
         cont = input("(y/n): ")
         if cont.lower() == "y":
             try:
-                os.system("sudo shutdown -h +" + str(time))
+                os.system("sudo shutdown -h +" + str(amount))
             except:
                 print("Error occurred. Trying again...")
-                os.system("shutdown /c")
-                shutdown(time)
+                os.system("shutdown -c")
+                shutdown(amount)
+            time.sleep(1)
         else:
             print("Returning to main menu...")
             time.sleep(0.3)
-            mainMenu()
+
+    mainMenu()
 
 
 
