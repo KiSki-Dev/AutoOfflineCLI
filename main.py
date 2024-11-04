@@ -8,7 +8,7 @@ import pathlib
 mainMenuString = "[1] Start\n[2] Stop Shutdown\n[3] About & Help\n[4] Exit"
 headerString = "AUTO OFFLINE CLIENT\n"
 version = 0.3
-updateURL = "https://pastebin.com/raw/Pp6nAPfJ"
+updateURL = "https://raw.githubusercontent.com/KiSki-Dev/AutoOfflineCLI/refs/heads/main/versions.json"
 
 def mainMenu():
     os.system('cls' if os.name == 'nt' else 'clear')
