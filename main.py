@@ -7,7 +7,7 @@ import pathlib
 
 mainMenuString = "[1] Start\n[2] Stop Shutdown\n[3] About & Help\n[4] Exit"
 headerString = "AUTO OFFLINE CLIENT\n"
-version = 0.3
+version = 1.0
 updateURL = "https://raw.githubusercontent.com/KiSki-Dev/AutoOfflineCLI/refs/heads/main/versions.json"
 
 def mainMenu():
@@ -205,7 +205,7 @@ def about():
     os.system('cls' if os.name == 'nt' else 'clear')
 
     print(headerString)
-    print("[1] Check for Updates\n[2] GitHub\n[3] Discord Support Server")
+    print("[1] Check for Updates\n[2] GitHub\n[3] Discord Support Server\n[4] Back")
 
     opt = input("\nSelect an option: ")
 
@@ -222,6 +222,8 @@ def about():
             webbrowser.open("https://discord.com/invite/cYqpx7dqsn", new=2)
             input("\nOpening 'https://discord.com/invite/cYqpx7dqsn'")
             mainMenu()
+        elif opt == 4:
+            aboutHelp()
 
         else:
             print("Invalid option. Please try again.")
@@ -236,7 +238,7 @@ def help():
     os.system('cls' if os.name == 'nt' else 'clear')
 
     print(headerString)
-    print("You can select your time until shutdown using the following units:\ns = seconds | m = minutes | h = hours | d = days | w = weeks\n\nYou can also use the following quick Parameters.")
+    print("You can select your time until shutdown using the following units:\ns = seconds | m = minutes | h = hours | d = days | w = weeks\n\nYou can also use the following quick Parameters: *IN WORK*")
 
     input("\nPress enter to get back to the Main Menu.")
     mainMenu()
@@ -245,30 +247,29 @@ def checkForUpdate():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(headerString)
 
-    response = requests.get(updateURL)
+    response = requests.get(updateURL) # versions.json File
 
-    if response.status_code == 200:
+    if response.status_code == 200: # No WiFi or updateURL down
         data = response.json()
 
         newestData = data["versions"]["newest"]
 
-        if version != newestData["version"]:
-            # Check if Dev
+        if version != newestData["version"]: # Update avaible
             currentData = data["versions"]["old"][str(version)]
 
             print("Update avaible!\n\nCurrent Version: " + str(version) +  "\nRelease Date: " + str(currentData["date"]) + "\nUpdate-Title: " + str(currentData["title"]) + "\n\nNewest Version: " + str(newestData["version"]))
-            input("\n\nPress enter to update AutoOffline!")
+            input("\n\nPress enter to update AutoOfflineCLI!")
 
-            downloadURL = "https://github.com/KiSki-Dev/AutoOfflineCLI/releases/latest/download/main.py"
+            downloadURL = "https://github.com/KiSki-Dev/AutoOfflineCLI/releases/latest/download/main.py" # Newest main.py | If more files used, please change.
             downloadPath = pathlib.Path(__file__).parent.resolve()
             response = requests.get(downloadURL, stream=True)
             file_path = os.path.join(downloadPath, "main.py")
             print("Downloading...")
 
             with open(file_path, "wb") as file:
+                print("Updating...")
                 for chunk in response.iter_content(chunk_size=8192):
-                    print("Updating...")
-                    file.write(chunk)
+                    file.write(chunk) # Rewrite main.py
 
         if version == newestData["version"]:
             print("No Update avaible!\n\nCurrent Version: " + str(version) +  "\nRelease Date: " + str(newestData["date"]) + "\nUpdate-Title: " + str(newestData["title"]))
@@ -276,8 +277,5 @@ def checkForUpdate():
             mainMenu()
     else:
         print("There has been a Error checking for Updates. Please check your WiFi Connection.")
-
-
-
 if __name__ == "__main__":
     mainMenu()
