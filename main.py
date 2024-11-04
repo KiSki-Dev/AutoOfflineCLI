@@ -2,10 +2,12 @@
 import os
 import time
 import webbrowser
+import requests
 
 mainMenuString = "[1] Start\n[2] Stop Shutdown\n[3] About & Help\n[4] Exit"
 headerString = "AUTO OFFLINE CLIENT\n"
-version = "0.2"
+version = 0.3
+updateURL = "https://pastebin.com/raw/Pp6nAPfJ"
 
 def mainMenu():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -239,8 +241,31 @@ def help():
     mainMenu()
 
 def checkForUpdate():
-    print("updated")
-    # To-Do : use json for Informations
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(headerString)
+
+    response = requests.get(updateURL)
+
+    if response.status_code == 200:
+        data = response.json()
+
+        newestData = data["versions"]["newest"]
+
+        if version != newestData["version"]:
+            # Check if Dev
+            currentData = data["versions"]["old"][str(version)]
+
+            print("Update avaible!\n\nCurrent Version: " + str(version) +  "\nRelease Date: " + str(currentData["date"]) + "\nUpdate-Title: " + str(currentData["title"]) + "\n\nNewest Version: " + str(newestData["version"]))
+            #input("\n\nPress enter to update AutoOffline!")
+            # To-Do 
+
+        if version == newestData["version"]:
+            print("No Update avaible!\n\nCurrent Version: " + str(version) +  "\nRelease Date: " + str(newestData["date"]) + "\nUpdate-Title: " + str(newestData["title"]))
+            input("\nPress enter to get back to the Main Menu.")
+            mainMenu()
+    else:
+        print("There has been a Error checking for Updates. Please check your WiFi Connection.")
+
 
 
 if __name__ == "__main__":

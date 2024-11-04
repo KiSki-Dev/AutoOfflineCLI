@@ -1,16 +1,22 @@
 {
     "versions": {
       "newest": {
-        "version": 0.2,
-        "date": "08.10.2024",
-        "titel": "Pre-Release 0.2",
+        "version": 0.3,
+        "date": "04.11.2024",
+        "title": "Pre-Release 0.3",
         "release": "dev"
       },
       "old": {
         "0.1": {
           "version": 0.1,
           "date": "15.05.2024",
-          "titel": "Pre-Release 0.1",
+          "title": "Pre-Release 0.1",
+          "release": "dev"
+        },
+        "0.2": {
+          "version": 0.2,
+          "date": "08.10.2024",
+          "title": "Pre-Release 0.2",
           "release": "dev"
         }
       }
