@@ -3,6 +3,7 @@ import os
 import time
 import webbrowser
 import requests
+import pathlib
 
 mainMenuString = "[1] Start\n[2] Stop Shutdown\n[3] About & Help\n[4] Exit"
 headerString = "AUTO OFFLINE CLIENT\n"
@@ -256,8 +257,18 @@ def checkForUpdate():
             currentData = data["versions"]["old"][str(version)]
 
             print("Update avaible!\n\nCurrent Version: " + str(version) +  "\nRelease Date: " + str(currentData["date"]) + "\nUpdate-Title: " + str(currentData["title"]) + "\n\nNewest Version: " + str(newestData["version"]))
-            #input("\n\nPress enter to update AutoOffline!")
-            # To-Do 
+            input("\n\nPress enter to update AutoOffline!")
+
+            downloadURL = "https://github.com/KiSki-Dev/AutoOfflineCLI/releases/latest/download/main.py"
+            downloadPath = pathlib.Path(__file__).parent.resolve()
+            response = requests.get(downloadURL, stream=True)
+            file_path = os.path.join(downloadPath, "main.py")
+            print("Downloading...")
+
+            with open(file_path, "wb") as file:
+                for chunk in response.iter_content(chunk_size=8192):
+                    print("Updating...")
+                    file.write(chunk)
 
         if version == newestData["version"]:
             print("No Update avaible!\n\nCurrent Version: " + str(version) +  "\nRelease Date: " + str(newestData["date"]) + "\nUpdate-Title: " + str(newestData["title"]))
