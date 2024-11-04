@@ -260,16 +260,16 @@ def checkForUpdate():
             print("Update avaible!\n\nCurrent Version: " + str(version) +  "\nRelease Date: " + str(currentData["date"]) + "\nUpdate-Title: " + str(currentData["title"]) + "\n\nNewest Version: " + str(newestData["version"]))
             input("\n\nPress enter to update AutoOfflineCLI!")
 
-            downloadURL = "https://github.com/KiSki-Dev/AutoOfflineCLI/releases/latest/download/main.py" # Newest main.py | If more files used, please change.
+            downloadURL = "https://github.com/KiSki-Dev/AutoOfflineCLI/releases/latest/download/AutoOffline.py" # Newest AutoOffline.py | If more files used, please change.
             downloadPath = pathlib.Path(__file__).parent.resolve()
             response = requests.get(downloadURL, stream=True)
-            file_path = os.path.join(downloadPath, "main.py")
+            file_path = os.path.join(downloadPath, "AutoOffline.py")
             print("Downloading...")
 
             with open(file_path, "wb") as file:
                 print("Updating...")
                 for chunk in response.iter_content(chunk_size=8192):
-                    file.write(chunk) # Rewrite main.py
+                    file.write(chunk) # Rewrite AutoOffline.py
 
         if version == newestData["version"]:
             print("No Update avaible!\n\nCurrent Version: " + str(version) +  "\nRelease Date: " + str(newestData["date"]) + "\nUpdate-Title: " + str(newestData["title"]))
